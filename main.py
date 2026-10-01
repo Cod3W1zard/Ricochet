@@ -9,6 +9,8 @@ HEIGHT = 400
 
 SPEED = 5
 FRICTION = 0.4
+PLAYER_WIDTH = 16
+PLAYER_HEIGHT = 16
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption("Ricochet")
@@ -16,8 +18,8 @@ clock = pygame.time.Clock()
     
 running = True
 
-player_image = pygame.image.load(".vscode/Ricochet/gnome_still.png").convert_alpha()
-player_image = pygame.transform.scale(player_image, (32, 32))
+player_image = pygame.image.load("gnome_still.png").convert_alpha()
+player_image = pygame.transform.scale(player_image, (PLAYER_WIDTH*2, PLAYER_HEIGHT*2))
 
 rects = []
 
@@ -42,7 +44,7 @@ class Player:
               image_rect = player_image.get_rect(center=self.center)
               self.surface.blit(player_image, image_rect)
 
-player = Player(screen, (300,200), 16, 16)
+player = Player(screen, (300,200), PLAYER_WIDTH, PLAYER_HEIGHT)
 player_velocity = pygame.Vector2(0, 0)
 
 while len(rects) < 10:
@@ -55,6 +57,8 @@ while running:
        for event in pygame.event.get():
         if event.type == pygame.QUIT:
                     running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+              print(pygame.mouse.get_pos())
        keys = pygame.key.get_pressed()
 
        previous_x = player.center.x
