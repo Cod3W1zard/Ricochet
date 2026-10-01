@@ -6,7 +6,9 @@ pygame.init()
 
 WIDTH = 600
 HEIGHT = 400
-WORLD_WIDTH = 1200
+
+SPEED = 5
+FRICTION = 0.4
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption("Ricochet")
@@ -44,7 +46,7 @@ player = Player(screen, (300,200), 16, 16)
 player_velocity = pygame.Vector2(0, 0)
 
 while len(rects) < 10:
-       rect = pygame.Rect(random.uniform(0, 550), random.uniform(0, 350), 50, 50)
+       rect = pygame.Rect(random.uniform(0, WIDTH - 50), random.uniform(0, HEIGHT - 50), 50, 50)
        if not rect.colliderect(player.hitbox):
               rects.append(rect)
 
@@ -60,13 +62,13 @@ while running:
 
 
        if keys[pygame.K_LEFT]:
-              player_velocity += (-5, 0)
+              player_velocity += (-SPEED, 0)
        if keys[pygame.K_RIGHT]:
-              player_velocity += (5, 0)
+              player_velocity += (SPEED, 0)
        if keys[pygame.K_UP]:
-              player_velocity += (0, -5)
+              player_velocity += (0, -SPEED)
        if keys[pygame.K_DOWN]:
-              player_velocity += (0, 5)
+              player_velocity += (0, SPEED)
 
        player.move((int(player_velocity.x), 0))
        for rect in rects:
@@ -80,7 +82,7 @@ while running:
                      player.set((player.center.x, previous_y))
                      player_velocity.y = 0
 
-       player_velocity *= 0.4
+       player_velocity *= FRICTION
 
        screen.fill((20, 24, 40))
 
