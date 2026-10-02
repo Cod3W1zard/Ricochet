@@ -94,7 +94,7 @@ def predict_bounce():
                             pygame.draw.line(screen, (0, 255, 0), position, position - direction * 10, 2)
                             direction.x = -direction.x
                             pygame.draw.line(screen, (0, 255, 0), position, position + direction * 10, 2)
-                            position.x += direction.x * 10
+                            position.x += direction.x * 20
                             break
                             
 
@@ -106,7 +106,7 @@ def predict_bounce():
                             pygame.draw.line(screen, (0, 255, 0), position, position - direction * 10, 2)
                             direction.y = -direction.y
                             pygame.draw.line(screen, (0, 255, 0), position, position + direction * 10, 2)
-                            position.y += direction.y * 10
+                            position.y += direction.y * 20
                             break
                             
 
