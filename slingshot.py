@@ -10,14 +10,16 @@ class Slingshot:
         self.graphic = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.rotation = 0
+        self.current_sprite = self.graphic
 
 
     def rotate(self):
         #self.graphic = pygame.transform.rotate(self.graphic, self.rotation)
         self.radians = math.radians(self.rotation)
         self.p = pygame.Vector2(self.p.x, self.p.y) + (8 * math.cos(self.radians), -8 * math.sin(self.radians))
+        self.current_sprite = pygame.transform.rotate(self.graphic, self.rotation)
     def draw(self):
         self.rotation = (pygame.Vector2((pygame.mouse.get_pos()) - self.p).normalize().angle_to(pygame.Vector2(1, 0)))
         self.rotate()
-        image_rect = self.graphic.get_rect(center=self.p)
-        self.surface.blit(self.graphic, image_rect)
+        image_rect = self.current_sprite.get_rect(center=self.p)
+        self.surface.blit(self.current_sprite, image_rect)

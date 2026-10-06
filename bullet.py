@@ -1,4 +1,7 @@
-import pygame 
+import pygame
+
+pbullets = []
+ebullets = []
 
 class Bullet:
        p = pygame.Vector2(0, 0)
@@ -26,15 +29,19 @@ class Bullet:
                             elif self.v.x < 0:
                                    self.p = pygame.Vector2(rect.right + (.5 * self.hitbox.width), self.p.y)    
                             self.v = pygame.Vector2(-self.v.x, self.v.y)
+                            c = True
                      if rect.colliderect(self.hitbox.move( 2 * self.v.xy)):   
                             if self.v.y < 0:
                                    self.p = pygame.Vector2(self.p.x, rect.bottom + (.5 * self.hitbox.height))
                             elif self.v.y > 0:
                                    self.p = pygame.Vector2(self.p.x, rect.top - (.5 * self.hitbox.height))    
                             self.v = pygame.Vector2(self.v.x, -self.v.y)
+                            c = True
                      
               if c:
                      self.curbounces += 1
+              if self.curbounces >= self.maxbounces:
+                     pbullets.remove(self)
                             
        def update(self):
               self.p += self.v
