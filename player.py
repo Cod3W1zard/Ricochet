@@ -5,11 +5,12 @@ class Player:
     v = pygame.Vector2(0, 0)
     hitbox = pygame.Rect(0, 0, 0, 0)
     colbox = pygame.Rect(0, 0, 0, 0)
+    coloffset = pygame.Vector2(0,12)
     graphic = None
 
-    spd = 5
-    decel = .5
-    accel = .5
+    spd = 3
+    decel = .825
+    accel = .75
     def __init__(self, surface, center, width, height):
         self.surface = surface
         self.p = pygame.Vector2(center)
@@ -17,7 +18,7 @@ class Player:
         self.width = width
         self.height = height
         self.hitbox = pygame.Rect(0, 0, width*2, height*2)
-        self.colbox = pygame.Rect(0, 0, width, height)
+        self.colbox = pygame.Rect(0, 0, 16, 8)
         self.hitbox.center = self.p
         self.graphic = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
@@ -28,7 +29,7 @@ class Player:
     def cols(self, rects):
         for rect in rects:
             disp = pygame.Vector2(self.p.xy)
-            self.colbox.center = disp
+            self.colbox.center = disp + self.coloffset
             if rect.colliderect(self.colbox.move(2*self.v.x, 0)):
                 if self.v.x > 0:
                     disp = pygame.Vector2(rect.left - (.5 * self.colbox.width), disp.y)
@@ -37,9 +38,9 @@ class Player:
                 self.v = pygame.Vector2(0, self.v.y)   
             if rect.colliderect(self.colbox.move(2 * self.v.xy)):   
                 if self.v.y < 0:
-                    disp = pygame.Vector2(disp.x, rect.bottom + (.5 * self.colbox.height))
+                    disp = pygame.Vector2(disp.x, rect.bottom + (.5 * self.colbox.height) - self.coloffset.y)
                 elif self.v.y > 0:
-                    disp = pygame.Vector2(disp.x, rect.top - (.5 * self.colbox.height))
+                    disp = pygame.Vector2(disp.x, rect.top - (.5 * self.colbox.height) - self.coloffset.y)
                 self.v = pygame.Vector2(self.v.x, 0)           
             self.set(disp)
 
@@ -55,5 +56,5 @@ class Player:
 
     def draw(self):
         image_rect = self.graphic.get_rect(center=self.p)
-        pygame.draw.rect(self.surface, (0,255,0), self.colbox.move(self.v * 2))
+        pygame.draw.rect(self.surface,(0, 125, 0), self.colbox)
         self.surface.blit(self.graphic, image_rect)

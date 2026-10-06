@@ -8,7 +8,7 @@ PLAYER_HEIGHT = 16
 enemies = None
 
 def Generate(screen):
-    plr = player.Player(screen, (300,200), PLAYER_WIDTH, PLAYER_HEIGHT)
+    plr = player.Player(screen, (150,200), PLAYER_WIDTH, PLAYER_HEIGHT)
     walls = [
         pygame.Rect(50, 50, 50, 50),
         pygame.Rect(50, 100, 50, 50),

@@ -20,13 +20,13 @@ class Bullet:
        def cols(self, rects):
               c = False
               for rect in rects:
-                     if rect.colliderect(self.hitbox.move(self.v.x, 0)):
+                     if rect.colliderect(self.hitbox.move(2 * self.v.x, 0)):
                             if self.v.x > 0:
                                    self.p = pygame.Vector2(rect.left - (.5 * self.hitbox.width), self.p.y)
                             elif self.v.x < 0:
                                    self.p = pygame.Vector2(rect.right + (.5 * self.hitbox.width), self.p.y)    
                             self.v = pygame.Vector2(-self.v.x, self.v.y)
-                     if rect.colliderect(self.hitbox.move(self.v.xy)):   
+                     if rect.colliderect(self.hitbox.move( 2 * self.v.xy)):   
                             if self.v.y < 0:
                                    self.p = pygame.Vector2(self.p.x, rect.bottom + (.5 * self.hitbox.height))
                             elif self.v.y > 0:
