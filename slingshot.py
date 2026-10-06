@@ -7,7 +7,7 @@ class Slingshot:
         self.p = pygame.Vector2(center)
         self.width = width
         self.height = height
-        self.graphic = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
+        self.graphic = pygame.image.load("Assets/Images/frame001.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.rotation = 0
         self.current_sprite = self.graphic
