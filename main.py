@@ -4,6 +4,7 @@ import random
 import player
 import bullet
 import lvl
+import slingshot
 
 pygame.init()
 
@@ -22,7 +23,7 @@ plr = l[0]
 walls = l[2]
 pbullets = []
 ebullets = []
-
+s = slingshot.Slingshot(screen, plr.p, 8, 8)
 def predict_bounce():
        direction = pygame.Vector2((pygame.mouse.get_pos()) - plr.p).normalize()
        position = pygame.Vector2(plr.p.xy)
@@ -82,6 +83,8 @@ while running:
               b.update()
               b.draw()
        predict_bounce()
+       s.p = plr.p
+       s.draw()
 
        pygame.display.flip()
        clock.tick(60)
