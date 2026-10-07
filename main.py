@@ -22,7 +22,7 @@ l = lvl.Generate(screen)
 plr = l[0]
 walls = l[2]
 
-s = slingshot.Slingshot(screen, plr.p, 8, 8)
+s = slingshot.Slingshot(screen, plr.p, 8, 8, plr)
 def predict_bounce():
        direction = pygame.Vector2((pygame.mouse.get_pos()) - plr.p).normalize()
        position = pygame.Vector2(plr.p.xy)
@@ -54,9 +54,7 @@ while running:
               if event.type == pygame.QUIT:
                     running = False
               if event.type == pygame.MOUSEBUTTONDOWN:
-                     b = bullet.Bullet(screen, plr.p, 5, 10, pygame.Vector2((pygame.mouse.get_pos()) - plr.p).normalize())
-                     bullet.pbullets.append(b)
-                     print(pygame.mouse.get_pos())
+                     s.shoot()
        keys = pygame.key.get_pressed()
 
        i = pygame.Vector2(0, 0)      
@@ -72,7 +70,7 @@ while running:
        plr.cols(walls)
        plr.update()
 
-       screen.fill((20, 24, 40))
+       screen.fill((0, 150, 0))
 
        for rect in walls:
               pygame.draw.rect(screen, (255,255,255), rect)

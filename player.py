@@ -22,6 +22,7 @@ class Player:
         self.hitbox.center = self.p
         self.graphic = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
+        self.current_sprite = self.graphic
 
     def update(self):
         self.set(self.p + self.v)
@@ -55,6 +56,6 @@ class Player:
         self.hitbox.center = self.p = l
 
     def draw(self):
-        image_rect = self.graphic.get_rect(center=self.p)
+        image_rect = self.current_sprite.get_rect(center=self.p)
         pygame.draw.rect(self.surface,(0, 125, 0), self.colbox)
-        self.surface.blit(self.graphic, image_rect)
+        self.surface.blit(self.current_sprite, image_rect)
