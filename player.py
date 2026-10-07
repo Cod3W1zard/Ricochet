@@ -23,6 +23,7 @@ class Player:
         self.graphic = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.current_sprite = self.graphic
+        self.keys = 0
 
     def update(self):
         self.set(self.p + self.v)
@@ -32,12 +33,18 @@ class Player:
             disp = pygame.Vector2(self.p.xy)
             self.colbox.center = disp + self.coloffset
             if rect.colliderect(self.colbox.move(2*self.v.x, 0)):
+                if rect.tag == "shed" and self.keys >= 4:
+                                print("Win!")
+                                self.keys = 0
                 if self.v.x > 0:
                     disp = pygame.Vector2(rect.left - (.5 * self.colbox.width), disp.y)
                 elif self.v.x < 0:
                     disp = pygame.Vector2(rect.right + (.5 * self.colbox.width), disp.y)    
                 self.v = pygame.Vector2(0, self.v.y)   
-            if rect.colliderect(self.colbox.move(2 * self.v.xy)):   
+            if rect.colliderect(self.colbox.move(2 * self.v.xy)):
+                if rect.tag == "shed" and self.keys >= 4:
+                                print("Win!")
+                                self.keys = 0   
                 if self.v.y < 0:
                     disp = pygame.Vector2(disp.x, rect.bottom + (.5 * self.colbox.height) - self.coloffset.y)
                 elif self.v.y > 0:

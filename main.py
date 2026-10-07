@@ -1,7 +1,5 @@
 import sys
 import pygame
-import random
-import player
 import bullet
 import lvl
 import slingshot
@@ -15,6 +13,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCAL
 pygame.display.set_icon(screen)
 pygame.display.set_caption("Ricochet")
 clock = pygame.time.Clock()
+font = pygame.font.Font(None, 32)
     
 running = True
 
@@ -55,6 +54,9 @@ while running:
                     running = False
               if event.type == pygame.MOUSEBUTTONDOWN:
                      s.shoot()
+              if event.type == pygame.KEYDOWN:
+                     if event.key == pygame.K_SPACE:
+                            plr.keys += 1
        keys = pygame.key.get_pressed()
 
        i = pygame.Vector2(0, 0)      
@@ -73,7 +75,10 @@ while running:
        screen.fill((0, 150, 0))
 
        for rect in walls:
-              pygame.draw.rect(screen, (255,255,255), rect)
+              if rect.tag == "shed":
+                     pygame.draw.rect(screen, (150, 75, 0), rect)
+              else:
+                     pygame.draw.rect(screen, (255,255,255), rect)
        plr.draw() 
        for b in bullet.pbullets:
               b.cols(walls)
@@ -82,7 +87,9 @@ while running:
        predict_bounce()
        s.p = plr.p
        s.draw()
-
+       
+       text = font.render(f"Keys: {plr.keys}", True, (255, 255, 255))
+       screen.blit(text, (20, 20))
        pygame.display.flip()
        clock.tick(60)
        
