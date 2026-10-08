@@ -9,6 +9,7 @@ class Bullet:
        r = 1
        maxbounces = 5
        curbounces = 0
+       daM = 4       
        speed = 5
 
        def __init__(self, surface, center, radius, speed, direction):
@@ -40,8 +41,6 @@ class Bullet:
                      
               if c:
                      self.curbounces += 1
-              if self.curbounces >= self.maxbounces:
-                     pbullets.remove(self)
                             
        def update(self):
               self.p += self.v
@@ -69,6 +68,9 @@ class Bullet:
                             self.hitbox.center = self.p
                             break
               self.hitbox.center = self.p
+       
+       def hit(self):
+              return self.daM * self.curbounces
        
        def draw(self):
               pygame.draw.circle(self.surface, (255, 0, 0), self.p, self.r)

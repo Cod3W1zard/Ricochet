@@ -20,6 +20,7 @@ running = True
 
 l = lvl.Generate(screen)
 plr = l[0]
+enms = l[1]
 walls = l[2]
 
 s = slingshot.Slingshot(screen, plr.p, 8, 8)
@@ -62,11 +63,11 @@ while running:
        i = pygame.Vector2(0, 0)      
        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
               i += (1, 0)
-       if keys[pygame.K_LEFT or pygame.K_a]:
+       if keys[pygame.K_LEFT] or keys[pygame.K_a]:
               i += (-1, 0)
-       if keys[pygame.K_UP or pygame.K_w]:
+       if keys[pygame.K_UP] or keys[pygame.K_w]:
               i += (0, -1)
-       if keys[pygame.K_DOWN or pygame.K_s]:
+       if keys[pygame.K_DOWN] or keys[pygame.K_s]:
               i += (0, 1)
        plr.movement(i)                                                                                                                                           
        plr.cols(walls)
@@ -77,10 +78,32 @@ while running:
        for rect in walls:
               pygame.draw.rect(screen, (255,255,255), rect)
        plr.draw() 
-       for b in bullet.pbullets:
-              b.cols(walls)
-              b.update()
-              b.draw()
+       for e in enms:
+              e.track(plr)
+              e.cols(walls)
+              e.update()
+              if e.clearshot and e.curshotcd == 0:
+                     eb = bullet.Bullet(screen, e.p, 5, 10, e.dir)
+                     bullet.ebullets.append(eb)
+                     e.curshotcd = e.shotcooldown
+              e.draw()
+       for eb in bullet.ebullets [:]:
+              eb.cols(walls)
+              eb.update()
+              if eb.curbounces >= eb.maxbounces:
+                     bullet.ebullets.remove(eb)
+              if eb.hitbox.colliderect(plr.hitbox):
+                     plr.takeDamage(eb.hit())
+              eb.draw() 
+       for pb in bullet.pbullets [:]:
+              pb.cols(walls)
+              pb.update()
+              if pb.curbounces >= pb.maxbounces:
+                     bullet.pbullets.remove(pb)
+              ind = pb.hitbox.collidelist([e.hitbox for e in enms])
+              if(ind != -1):
+                     enms[ind].takeDamage(eb.hit(), enms)
+              pb.draw()
        predict_bounce()
        s.p = plr.p
        s.draw()
@@ -90,4 +113,3 @@ while running:
        
 pygame.quit()
 sys.exit()
-    

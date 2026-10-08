@@ -11,6 +11,8 @@ class Player:
     spd = 3
     decel = .825
     accel = .75
+    h = 15
+
     def __init__(self, surface, center, width, height):
         self.surface = surface
         self.p = pygame.Vector2(center)
@@ -53,8 +55,11 @@ class Player:
     def set(self, location: tuple | pygame.Vector2):
         l = pygame.Vector2(location)
         self.hitbox.center = self.p = l
+    
+    def takeDamage(self, damage):
+        self.h -= damage
 
     def draw(self):
         image_rect = self.graphic.get_rect(center=self.p)
-        pygame.draw.rect(self.surface,(0, 125, 0), self.colbox)
+        #pygame.draw.rect(self.surface,(0, 125, 0), self.colbox)
         self.surface.blit(self.graphic, image_rect)
