@@ -1,6 +1,8 @@
+import random
 import sys
 import pygame
 import bullet
+import enemy
 import lvl
 import slingshot
 
@@ -25,30 +27,40 @@ walls = l[2]
 s = slingshot.Slingshot(screen, plr.p, 8, 8, plr)
 def predict_bounce():
        direction = pygame.Vector2((pygame.mouse.get_pos()) - plr.p).normalize()
-       position = pygame.Vector2(plr.p.xy)
-       test_hitbox = pygame.Rect(0, 0, 10, 10)
+       position = s.p + (0,6)
+       test_hitbox = pygame.Rect(0, 0, 12, 12)
        test_hitbox.center = position
-       for _ in range(200):
-              position.x += direction.x * 10
-              test_hitbox.center = position
+       previous_collide = position.copy()
+       collisions = []
+       velocity = pygame.Vector2(direction.x * 10, direction.y * 10)
+       for _ in range(30):
+              position.x += velocity.x
+              test_hitbox.center = position    
               for rect in walls:
                      if test_hitbox.colliderect(rect):
-                            pygame.draw.line(screen, (0, 255, 0), position, position - direction * 10, 2)
-                            direction.x = -direction.x
-                            pygame.draw.line(screen, (0, 255, 0), position, position + direction * 10, 2)
-                            position.x += direction.x * 20
+                            velocity.x = -velocity.x
+                            position.x += velocity.x
+                            test_hitbox.center = position
+                            collisions.append((previous_collide, position.copy()))
+                            previous_collide = position.copy()
                             break
-
-              position.y += direction.y * 10
+                            
+              position.y += velocity.y
               test_hitbox.center = position
+       
               for rect in walls:
                      if test_hitbox.colliderect(rect):
-                            pygame.draw.line(screen, (0, 255, 0), position, position - direction * 10, 2)
-                            direction.y = -direction.y
-                            pygame.draw.line(screen, (0, 255, 0), position, position + direction * 10, 2)
-                            position.y += direction.y * 20
+                            velocity.y = -velocity.y
+                            position.y += velocity.y
+                            test_hitbox.center = position
+                            collisions.append((previous_collide, position.copy()))
+                            previous_collide = position.copy()
                             break
-
+              test_hitbox.center = position
+       for col in collisions:
+              pygame.draw.line(screen, (0, 255, 0), col[0], col[1], 2)
+       pygame.draw.line(screen, (0, 255, 0), previous_collide, position, 2)
+                                   
 while running:
        for event in pygame.event.get():
               if event.type == pygame.QUIT:
@@ -58,6 +70,8 @@ while running:
               if event.type == pygame.KEYDOWN:
                      if event.key == pygame.K_SPACE:
                             plr.keys += 1
+                     if event.key == pygame.K_LCTRL:
+                            enms.append(enemy.Enemy(screen, (random.uniform(0, 600), random.uniform(0, 400)), lvl.PLAYER_WIDTH, lvl.PLAYER_HEIGHT))
        keys = pygame.key.get_pressed()
 
        i = pygame.Vector2(0, 0)      
@@ -92,7 +106,7 @@ while running:
               e.draw()
        for eb in bullet.ebullets [:]:
               eb.cols(walls)
-              eb.update()
+              eb.move(walls)
               if eb.curbounces >= eb.maxbounces:
                      bullet.ebullets.remove(eb)
               if eb.hitbox.colliderect(plr.hitbox):
@@ -100,12 +114,12 @@ while running:
               eb.draw() 
        for pb in bullet.pbullets [:]:
               pb.cols(walls)
-              pb.update()
+              pb.move(walls)
               if pb.curbounces >= pb.maxbounces:
                      bullet.pbullets.remove(pb)
               ind = pb.hitbox.collidelist([e.hitbox for e in enms])
               if(ind != -1):
-                     enms[ind].takeDamage(eb.hit(), enms)
+                     enms[ind].takeDamage(pb.hit(), enms)
               pb.draw()
        predict_bounce()
        s.p = plr.p

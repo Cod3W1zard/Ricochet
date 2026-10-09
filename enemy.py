@@ -12,7 +12,7 @@ class Enemy:
     spd = 2
     decel = .825
     accel = .75
-    h = 15
+    h = 4
     pd = 200
     clearshot = False
     shotcooldown = 30
