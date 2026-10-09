@@ -33,7 +33,7 @@ def predict_bounce():
        previous_collide = position.copy()
        collisions = []
        velocity = pygame.Vector2(direction.x * 10, direction.y * 10)
-       for _ in range(30):
+       for _ in range(20):
               position.x += velocity.x
               test_hitbox.center = position    
               for rect in walls:
