@@ -12,7 +12,7 @@ class Bullet:
        daM = 4       
        speed = 5
 
-       def __init__(self, surface, center, radius, speed, direction):
+       def __init__(self, surface, center, radius, speed, direction, type = "player"):
               self.surface = surface
               self.p = pygame.Vector2(center)
               self.r = radius
@@ -20,6 +20,7 @@ class Bullet:
               self.hitbox = pygame.Rect(0, 0, radius*2.5, radius*2.5)
               self.hitbox.center = self.p
               self.curbounces = 0
+              self.type = type
 
        def cols(self, rects):
               # c = False
@@ -76,8 +77,11 @@ class Bullet:
               return self.daM * self.curbounces
        
        def draw(self):
-              if self.curbounces == 0:
-                     color = (255, 0, 0)
-              else:
-                     color = (0, 255, 0)
+              if self.type == "player":
+                     if self.curbounces == 0:
+                            color = (255, 0, 0)
+                     else:
+                            color = (0, 255, 0)
+              else: 
+                     color = (255, 255, 0)
               pygame.draw.circle(self.surface, color, self.p, self.r)

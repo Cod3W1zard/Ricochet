@@ -117,7 +117,7 @@ while running:
               e.cols(walls)
               e.update()
               if e.clearshot and e.curshotcd == 0:
-                     eb = bullet.Bullet(screen, e.p, 5, 10, e.dir)
+                     eb = bullet.Bullet(screen, e.p, 5, 10, e.dir, type = "enemy")
                      bullet.ebullets.append(eb)
                      e.curshotcd = e.shotcooldown
               e.draw()
