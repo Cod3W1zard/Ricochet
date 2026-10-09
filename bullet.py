@@ -76,4 +76,8 @@ class Bullet:
               return self.daM * self.curbounces
        
        def draw(self):
-              pygame.draw.circle(self.surface, (255, 0, 0), self.p, self.r)
+              if self.curbounces == 0:
+                     color = (255, 0, 0)
+              else:
+                     color = (0, 255, 0)
+              pygame.draw.circle(self.surface, color, self.p, self.r)

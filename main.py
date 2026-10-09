@@ -10,12 +10,15 @@ pygame.init()
 
 WIDTH = 600
 HEIGHT = 400
+DEBUG_LINE_LENGTH = 100
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_icon(screen)
 pygame.display.set_caption("Ricochet")
 clock = pygame.time.Clock()
-font = pygame.font.Font(None, 32)
+font_top = pygame.font.Font(None, 32)
+font_bottom = pygame.font.Font(None, 12)
+debug = True
     
 running = True
 
@@ -33,7 +36,7 @@ def predict_bounce():
        previous_collide = position.copy()
        collisions = []
        velocity = pygame.Vector2(direction.x * 10, direction.y * 10)
-       for _ in range(20):
+       for _ in range(DEBUG_LINE_LENGTH):
               position.x += velocity.x
               test_hitbox.center = position    
               for rect in walls:
@@ -57,9 +60,21 @@ def predict_bounce():
                             previous_collide = position.copy()
                             break
               test_hitbox.center = position
-       for col in collisions:
-              pygame.draw.line(screen, (0, 255, 0), col[0], col[1], 2)
-       pygame.draw.line(screen, (0, 255, 0), previous_collide, position, 2)
+              if len(collisions) > 4:
+                     break
+       if len(collisions) > 4:
+              pygame.draw.line(screen, (255, 0, 0), collisions[0][0], collisions[0][1], 2)
+              for col in collisions[1:4]:
+                     pygame.draw.line(screen, (0, 255, 0), col[0], col[1], 2)
+              pygame.draw.line(screen, (0, 255, 0), collisions[-1][0], collisions[-1][1], 2)
+       elif len(collisions) > 0:
+              pygame.draw.line(screen, (255, 0, 0), collisions[0][0], collisions[0][1], 2)
+              for col in collisions[1:]:
+                     pygame.draw.line(screen, (0, 255, 0), col[0], col[1], 2)
+              pygame.draw.line(screen, (0, 255, 0), previous_collide, position, 2)
+       else:
+              pygame.draw.line(screen, (255, 0, 0), previous_collide, position, 2)
+       
                                    
 while running:
        for event in pygame.event.get():
@@ -68,6 +83,8 @@ while running:
               if event.type == pygame.MOUSEBUTTONDOWN:
                      s.shoot()
               if event.type == pygame.KEYDOWN:
+                     if event.key == pygame.K_F1:
+                            debug = not debug
                      if event.key == pygame.K_SPACE:
                             plr.keys += 1
                      if event.key == pygame.K_LCTRL:
@@ -121,12 +138,15 @@ while running:
               if(ind != -1):
                      enms[ind].takeDamage(pb.hit(), enms)
               pb.draw()
-       predict_bounce()
+       if debug:
+              predict_bounce()
        s.p = plr.p
        s.draw()
        
-       text = font.render(f"Keys: {plr.keys}", True, (255, 255, 255))
+       text = font_top.render(f"Keys: {plr.keys}", True, (255, 255, 255))
        screen.blit(text, (20, 20))
+       text = font_bottom.render(f"Debug: F1", True, (255, 255, 255))
+       screen.blit(text, (12, 388))
        pygame.display.flip()
        clock.tick(60)
        
