@@ -111,6 +111,8 @@ while running:
                      pygame.draw.rect(screen, (150, 75, 0), rect)
               else:
                      pygame.draw.rect(screen, (255,255,255), rect)
+              if rect.sprite != None:
+                     screen.blit(rect.sprite, rect)
        plr.draw() 
        for e in enms:
               e.track(plr)
