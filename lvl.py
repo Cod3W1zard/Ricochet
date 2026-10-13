@@ -38,7 +38,10 @@ def Generate(screen):
         TaggedRect(500, 250, 50, 50, sprite = "plant_t", flip_x = True),
         TaggedRect(500, 300, 50, 50, sprite = "plant_c", flip_x = True),
         TaggedRect(450, 300, 50, 50, sprite = "plant_b", flip_x = True),
-        TaggedRect(250, 150, 100, 100),
+        TaggedRect(250, 150, 50, 50, sprite = "plant_c", flip_y = True),
+        TaggedRect(300, 150, 50, 50, sprite = "plant_c", flip_x = True, flip_y = True),
+        TaggedRect(250, 200, 50, 50, sprite = "plant_c"),
+        TaggedRect(300, 200, 50, 50, sprite = "plant_c", flip_x = True),
         TaggedRect(275, 0, 50, 50, tag = "shed")
         ]
     return (plr, enemies, walls)

@@ -18,8 +18,9 @@ pygame.display.set_caption("Ricochet")
 clock = pygame.time.Clock()
 font_top = pygame.font.Font(None, 32)
 font_bottom = pygame.font.Font(None, 12)
-debug = True
-    
+debug = False
+background = pygame.image.load("Assets/Images/background.png").convert_alpha()
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 running = True
 
 l = lvl.Generate(screen)
@@ -77,6 +78,9 @@ def predict_bounce():
        
                                    
 while running:
+
+       
+
        for event in pygame.event.get():
               if event.type == pygame.QUIT:
                     running = False
@@ -105,14 +109,14 @@ while running:
        plr.update()
 
        screen.fill((0, 150, 0))
+       screen.blit(background, (0,0))
 
        for rect in walls:
               if rect.tag == "shed":
                      pygame.draw.rect(screen, (150, 75, 0), rect)
               else:
-                     pygame.draw.rect(screen, (255,255,255), rect)
-              if rect.sprite != None:
-                     screen.blit(rect.sprite, rect)
+                     if rect.sprite != None:
+                            screen.blit(rect.sprite, rect)
        plr.draw() 
        for e in enms:
               e.track(plr)
