@@ -135,14 +135,15 @@ while running:
               if eb.hitbox.colliderect(plr.hitbox):
                      plr.takeDamage(eb.hit())
               eb.draw() 
-       for pb in bullet.pbullets [:]:
+       for pb in bullet.pbullets[:]:
               pb.cols(walls)
               pb.move(walls)
               if pb.curbounces >= pb.maxbounces:
                      bullet.pbullets.remove(pb)
               ind = pb.hitbox.collidelist([e.hitbox for e in enms])
-              if(ind != -1):
+              if(ind != -1) and pb.curbounces != 0:
                      enms[ind].takeDamage(pb.hit(), enms)
+                     bullet.pbullets.remove(pb)
               pb.draw()
        if debug:
               predict_bounce()
