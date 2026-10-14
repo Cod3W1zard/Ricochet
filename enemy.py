@@ -1,4 +1,5 @@
 import pygame
+import random
 
 class Enemy:
     p = pygame.Vector2(0, 0)
@@ -21,7 +22,7 @@ class Enemy:
     pathfindP = pygame.Vector2(0,0)
     die = False
 
-    def __init__(self, surface, center, width, height):
+    def __init__(self, surface, center, width, height, plr):
         self.surface = surface
         self.p = pygame.Vector2(center)
         self.v = pygame.Vector2(0, 0)
@@ -34,6 +35,7 @@ class Enemy:
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.flash = 0
         self.elist = None
+        self.plr = plr
 
     def update(self):
         self.set(self.p + self.v)     
@@ -74,6 +76,8 @@ class Enemy:
 
     def draw(self):
         if self.die and self.flash == 0:
+            if random.uniform(1,5) == 1:
+                self.plr.keys += 1
             self.elist.remove(self)
         if self.flash % 4 < 2:
                 image_rect = self.graphic.get_rect(center=self.p)

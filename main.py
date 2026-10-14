@@ -92,7 +92,7 @@ while running:
                      if event.key == pygame.K_SPACE:
                             plr.keys += 1
                      if event.key == pygame.K_LCTRL:
-                            enms.append(enemy.Enemy(screen, (random.uniform(0, 600), random.uniform(0, 400)), lvl.PLAYER_WIDTH, lvl.PLAYER_HEIGHT))
+                            enms.append(enemy.Enemy(screen, (random.uniform(0, 600), random.uniform(0, 400)), lvl.PLAYER_WIDTH, lvl.PLAYER_HEIGHT, plr))
        keys = pygame.key.get_pressed()
 
        i = pygame.Vector2(0, 0)      

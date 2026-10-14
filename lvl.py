@@ -23,7 +23,7 @@ class TaggedRect(pygame.Rect):
 def Generate(screen):
     plr = player.Player(screen, (150,200), PLAYER_WIDTH, PLAYER_HEIGHT)
     enemies = [
-        enemy.Enemy(screen, (450,200), PLAYER_WIDTH, PLAYER_HEIGHT)
+        enemy.Enemy(screen, (450,200), PLAYER_WIDTH, PLAYER_HEIGHT, plr)
         ]
     walls = [
         TaggedRect(50, 50, 50, 50, sprite = "plant_c", flip_y = True),
