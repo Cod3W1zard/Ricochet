@@ -21,7 +21,7 @@ class TaggedRect(pygame.Rect):
 
 
 def Generate(screen):
-    plr = player.Player(screen, (150,200), PLAYER_WIDTH, PLAYER_HEIGHT)
+    plr = player.Player(screen, (150,200), PLAYER_WIDTH, PLAYER_HEIGHT, "play")
     enemies = [
         enemy.Enemy(screen, (450,200), PLAYER_WIDTH, PLAYER_HEIGHT, plr)
         ]

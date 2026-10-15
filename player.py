@@ -13,7 +13,7 @@ class Player:
     accel = .75
     h = 15
 
-    def __init__(self, surface, center, width, height):
+    def __init__(self, surface, center, width, height, game_state):
         self.surface = surface
         self.p = pygame.Vector2(center)
         self.v = pygame.Vector2(0, 0)
@@ -26,6 +26,7 @@ class Player:
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.current_sprite = self.graphic
         self.keys = 0
+        self.game_state = game_state
 
     def update(self):
         self.set(self.p + self.v)
@@ -36,7 +37,7 @@ class Player:
             self.colbox.center = disp + self.coloffset
             if rect.colliderect(self.colbox.move(2*self.v.x, 0)):
                 if rect.tag == "shed" and self.keys >= 4:
-                                print("Win!")
+                                self.game_state = "win"
                                 self.keys = 0
                 if self.v.x > 0:
                     disp = pygame.Vector2(rect.left - (.5 * self.colbox.width), disp.y)
@@ -45,7 +46,7 @@ class Player:
                 self.v = pygame.Vector2(0, self.v.y)   
             if rect.colliderect(self.colbox.move(2 * self.v.xy)):
                 if rect.tag == "shed" and self.keys >= 4:
-                                print("Win!")
+                                self.game_state = "win"
                                 self.keys = 0   
                 if self.v.y < 0:
                     disp = pygame.Vector2(disp.x, rect.bottom + (.5 * self.colbox.height) - self.coloffset.y)
