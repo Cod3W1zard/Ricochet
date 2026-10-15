@@ -2,6 +2,8 @@ import pygame
 import random
 
 class Enemy:
+    
+    keylist = []
     p = pygame.Vector2(0, 0)
     v = pygame.Vector2(0, 0)
     dir = pygame.Vector2(0, 0)
@@ -36,6 +38,7 @@ class Enemy:
         self.flash = 0
         self.elist = None
         self.plr = plr
+        self.keylist = []
 
     def update(self):
         self.set(self.p + self.v)     
@@ -76,8 +79,10 @@ class Enemy:
 
     def draw(self):
         if self.die and self.flash == 0:
-            if random.uniform(1,5) == 1:
-                self.plr.keys += 1
+            if random.uniform(1,1) == 1:
+                key = pygame.Rect(0, 0, 5, 5)
+                key.center = self.p
+                Enemy.keylist.append(key)
             self.elist.remove(self)
         if self.flash % 4 < 2:
                 image_rect = self.graphic.get_rect(center=self.p)

@@ -127,6 +127,12 @@ while running:
                      bullet.ebullets.append(eb)
                      e.curshotcd = e.shotcooldown
               e.draw()
+       for key in enemy.Enemy.keylist[:]:
+              if plr.hitbox.colliderect(key):
+                     plr.keys += 1
+                     enemy.Enemy.keylist.remove(key)
+              else:
+                     pygame.draw.rect(screen, (255,255,0), key)
        for eb in bullet.ebullets [:]:
               eb.cols(walls)
               eb.move(walls)
