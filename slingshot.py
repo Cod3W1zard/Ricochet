@@ -5,6 +5,7 @@ import player
 import bullet
 
 class Slingshot:
+    
     def __init__(self, surface, center, width, height, player):
         self.surface = surface
         self.p = pygame.Vector2(center)
