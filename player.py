@@ -22,7 +22,7 @@ class Player:
         self.hitbox = pygame.Rect(0, 0, width*2, height*2)
         self.colbox = pygame.Rect(0, 0, 16, 8)
         self.hitbox.center = self.p
-        self.graphic = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
+        self.graphic = pygame.image.load("Assets/Images/Player/chet00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.current_sprite = self.graphic
         self.keys = 0

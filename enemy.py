@@ -1,3 +1,4 @@
+from pygame import Vector2
 import pygame
 import random
 
@@ -33,7 +34,7 @@ class Enemy:
         self.hitbox = pygame.Rect(0, 0, width*2, height*2)
         self.colbox = pygame.Rect(0, 0, 16, 8)
         self.hitbox.center = self.p
-        self.graphic = pygame.image.load("Assets/Images/bad00.png").convert_alpha()
+        self.graphic = pygame.image.load("Assets/Images/Enemy/bad00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
         self.flash = 0
         self.elist = None
@@ -63,15 +64,56 @@ class Enemy:
                 self.v = pygame.Vector2(self.v.x, 0)           
             self.set(disp)
 
-    def track(self, plr):
+    def track(self, plr, walls):
         disp = (plr.p - self.p)
-        self.dir = disp.normalize()
-        self.clearshot = True
+        self.dir = disp.normalize()    
+        self.curpathfinding = False
+        
+        if not self.curpathfinding:
+            self.clearshot = True
+            for w in walls:
+                if w.clipline(self.p, plr.p):
+                    self.clearshot = False
+                    horz = abs(disp.x) > abs(disp.y)
+                    px = 0
+                    py = 0
+
+                    if disp.x <= 0: 
+                        if self.p.x > w.right:
+                            px = w.right
+                        else:
+                            px = w.left - self.colbox.width
+                    else:
+                        if self.p.x < w.left:
+                            px = w.left
+                        else:
+                            px = w.right + self.colbox.width
+
+                    if disp.y <= 0: 
+                        if self.p.y < w.bottom:
+                            py = w.top - self.colbox.height
+                        else:
+                            py = w.bottom + self.colbox.height * 2
+                    else:
+                        if self.p.x > w.top:
+                            py = w.bottom
+                        else:
+                            py = w.top - self.colbox.height * 2
+                               
+                    self.pathfindP = pygame.Vector2(px, py)
+                    self.curpathfinding = True
+                
+        if self.curpathfinding:
+            wdisp = (self.pathfindP - self.p)
+            if(wdisp.dot(self.dir) < 0):
+                self.curpathfinding = False
+            self.dir = wdisp.normalize()
+        print(self.clearshot)
 
         if self.clearshot and disp.magnitude() < self.pd:
             self.v = self.v.move_towards(pygame.Vector2(0,0), self.decel)
         else:
-             self.v = self.v.move_towards(self.dir * self.spd, self.accel)
+            self.v = self.v.move_towards(self.dir * self.spd, self.accel)
 
     def set(self, location: tuple | pygame.Vector2):
         l = pygame.Vector2(location)
