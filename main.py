@@ -13,7 +13,8 @@ HEIGHT = 400
 DEBUG_LINE_LENGTH = 100
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCALED)
-pygame.display.set_icon(screen)
+icon = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
+pygame.display.set_icon(icon)
 pygame.display.set_caption("Ricochet")
 clock = pygame.time.Clock()
 font_top = pygame.font.Font(None, 32)
@@ -161,9 +162,20 @@ while running:
               text = font_bottom.render(f"Debug: F1", True, (255, 255, 255))
               screen.blit(text, (12, 388))
        if plr.game_state == "win":
+              for event in pygame.event.get():
+                     if event.type == pygame.QUIT:
+                            running = False
+                     if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_SPACE:
+                                   l = lvl.Generate(screen)
+                                   plr = l[0]
+                                   enms = l[1]
+                                   plr.keylist = []
+                                   walls = l[2]
+                                   plr.game_state = "play"
               screen.fill((0,0,0))
               text = font_top.render(f"You Win!", True, (255, 255, 255))
-              screen.blit(text, (300, 200))
+              screen.blit(text, (300-text.get_width()/2, 200))
               
        
        pygame.display.flip()
