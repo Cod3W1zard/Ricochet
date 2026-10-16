@@ -1,7 +1,10 @@
 from pygame import Vector2
 import pygame
+import random
 
 class Enemy:
+    
+    keylist = []
     p = pygame.Vector2(0, 0)
     v = pygame.Vector2(0, 0)
     dir = pygame.Vector2(0, 0)
@@ -13,15 +16,16 @@ class Enemy:
     spd = 2
     decel = .825
     accel = .75
-    h = 15
+    h = 8
     pd = 200
     clearshot = False
     shotcooldown = 30
     curshotcd = 0
     curpathfinding = False
     pathfindP = pygame.Vector2(0,0)
+    die = False
 
-    def __init__(self, surface, center, width, height):
+    def __init__(self, surface, center, width, height, plr):
         self.surface = surface
         self.p = pygame.Vector2(center)
         self.v = pygame.Vector2(0, 0)
@@ -32,6 +36,10 @@ class Enemy:
         self.hitbox.center = self.p
         self.graphic = pygame.image.load("Assets/Images/Enemy/bad00.png").convert_alpha()
         self.graphic = pygame.transform.scale(self.graphic, (width*2, height*2))
+        self.flash = 0
+        self.elist = None
+        self.plr = plr
+        self.keylist = []
 
     def update(self):
         self.set(self.p + self.v)     
@@ -112,11 +120,25 @@ class Enemy:
         self.hitbox.center = self.p = l
 
     def draw(self):
-        image_rect = self.graphic.get_rect(center=self.p)
-        pygame.draw.rect(self.surface,(0, 125, 0), self.colbox)
-        self.surface.blit(self.graphic, image_rect)
+        if self.die and self.flash == 0:
+            if random.uniform(1,1) == 1:
+                key = pygame.Rect(0, 0, 5, 5)
+                key.center = self.p
+                Enemy.keylist.append(key)
+            self.elist.remove(self)
+        if self.flash % 4 < 2:
+                image_rect = self.graphic.get_rect(center=self.p)
+                pygame.draw.rect(self.surface,(0, 125, 0), self.colbox)
+                self.surface.blit(self.graphic, image_rect)
+        if self.flash > 0:
+            self.flash -= 1
+
+    def flash(self):
+        pass
     
     def takeDamage(self, damage, elist):
+        self.elist = elist
         self.h -= damage
         if(self.h <= 0):
-            elist.remove(self)
+            self.die = True
+        self.flash = 60
