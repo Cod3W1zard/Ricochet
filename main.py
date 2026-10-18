@@ -15,7 +15,7 @@ async def main():
        DEBUG_LINE_LENGTH = 100
        
        screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCALED)
-       icon = pygame.image.load("Assets/Images/chet00.png").convert_alpha()
+       icon = pygame.image.load("Assets/Images/Player/chet00.png").convert_alpha()
        pygame.display.set_icon(icon)
        pygame.display.set_caption("Ricochet")
        clock = pygame.time.Clock()
