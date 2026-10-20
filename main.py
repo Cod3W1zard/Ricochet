@@ -23,7 +23,8 @@ async def main():
        font_bottom = pygame.font.Font(None, 12)
        debug = False
        background = pygame.image.load("Assets/Images/background.png").convert_alpha()
-       background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+       tile_width = background.get_width()
+       tile_height = background.get_height()
        running = True
 
        l = lvl.Generate(screen)
@@ -80,6 +81,9 @@ async def main():
                      pygame.draw.line(screen, (255, 0, 0), previous_collide, position, 2)
                                                   
        while running:
+              
+
+
               if plr.game_state == "play":
                      for event in pygame.event.get():
                             if event.type == pygame.QUIT:
@@ -107,9 +111,9 @@ async def main():
                      plr.movement(i)                                                                                                                                           
                      plr.cols(walls)
                      plr.update()
-       
-                     screen.fill((0, 150, 0))
-                     screen.blit(background, (0,0))
+                     for x in range(0, WIDTH, tile_width):
+                            for y in range(0, HEIGHT, tile_height):
+                                   screen.blit(background, (x, y))
        
                      for rect in walls:
                             if rect.tag == "shed":

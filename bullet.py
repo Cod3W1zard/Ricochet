@@ -22,6 +22,7 @@ class Bullet:
               self.hitbox.center = self.p
               self.curbounces = 0
               self.type = type
+              self.image = pygame.image.load("Assets\Images\shard.png").convert_alpha()
 
        def cols(self, rects):
               # c = False
@@ -82,7 +83,9 @@ class Bullet:
                      if self.curbounces == 0:
                             color = (255, 0, 0)
                      else:
-                            color = (0, 255, 0)
+                            color = (255, 255, 255)
               else: 
                      color = (255, 255, 0)
-              pygame.draw.circle(self.surface, color, self.p, self.r)
+              tinted_image = self.image.copy()
+              tinted_image.fill(color, special_flags=pygame.BLEND_RGBA_MULT)
+              self.surface.blit(tinted_image, self.hitbox)
