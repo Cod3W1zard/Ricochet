@@ -23,7 +23,8 @@ async def main():
        font_bottom = pygame.font.Font(None, 12)
        debug = False
        background = pygame.image.load("Assets/Images/background.png").convert_alpha()
-       background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+       tile_width = background.get_width()
+       tile_height = background.get_height()
        running = True
 
        l = lvl.Generate(screen)
@@ -93,8 +94,8 @@ async def main():
                                           plr.keys += 1
                                    if event.key == pygame.K_LCTRL:
                                           enms.append(enemy.Enemy(screen, (random.uniform(0, 600), random.uniform(0, 400)), lvl.PLAYER_WIDTH, lvl.PLAYER_HEIGHT, plr))
+                     
                      keys = pygame.key.get_pressed()
-       
                      i = pygame.Vector2(0, 0)      
                      if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                             i += (1, 0)
@@ -107,45 +108,47 @@ async def main():
                      plr.movement(i)                                                                                                                                           
                      plr.cols(walls)
                      plr.update()
-       
-                     screen.fill((0, 150, 0))
-                     screen.blit(background, (0,0))
+                     for x in range(0, WIDTH, tile_width):
+                            for y in range(0, HEIGHT, tile_height):
+                                   screen.blit(background, (x, y))
        
                      for rect in walls:
                             if rect.sprite != None:
                                           screen.blit(rect.sprite, rect)
                      plr.draw() 
                      for e in enms:
-                            e.track(plr, walls)
+                            if e.state == "pursue":
+                                   e.track(plr, walls)
+                                   if e.clearshot and e.curshotcd == 0:
+                                          eb = bullet.Bullet(screen, e.p, 5, 10, e.dir, type = "enemy")
+                                          bullet.ebullets.append(eb)
+                                          e.curshotcd = e.shotcooldown
+                            if e.state == "hitstun" or e.state == "dead":
+                                   e.hurt()
                             e.cols(walls)
-                            e.update()
-                            if e.clearshot and e.curshotcd == 0:
-                                   eb = bullet.Bullet(screen, e.p, 5, 10, e.dir, type = "enemy")
-                                   bullet.ebullets.append(eb)
-                                   e.curshotcd = e.shotcooldown
+                            e.update()                            
                             e.draw()
                      for key in enemy.Enemy.keylist[:]:
                             if plr.hitbox.colliderect(key):
                                    plr.keys += 1
                                    enemy.Enemy.keylist.remove(key)
                             else:
-                                   pygame.draw.rect(screen, (255,255,0), key)
+                                   screen.blit(enemy.Enemy.keyg, key)
                      for eb in bullet.ebullets [:]:
-                            eb.cols(walls)
                             eb.move(walls)
                             if eb.curbounces >= eb.maxbounces:
                                    bullet.ebullets.remove(eb)
                             if eb.hitbox.colliderect(plr.hitbox):
-                                   plr.takeDamage(eb.hit())
+                                   plr.takeDamage(eb)
+                                   bullet.ebullets.remove(eb)
                             eb.draw() 
                      for pb in bullet.pbullets[:]:
-                            pb.cols(walls)
                             pb.move(walls)
                             if pb.curbounces >= pb.maxbounces:
                                    bullet.pbullets.remove(pb)
                             ind = pb.hitbox.collidelist([e.hitbox for e in enms])
                             if ind != -1 and pb.curbounces != 0:
-                                   enms[ind].takeDamage(pb.hit(), enms)
+                                   enms[ind].takeDamage(pb, enms)
                                    bullet.pbullets.remove(pb)
                             pb.draw()
                      if debug:
