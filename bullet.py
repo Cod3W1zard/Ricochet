@@ -22,29 +22,7 @@ class Bullet:
               self.hitbox.center = self.p
               self.curbounces = 0
               self.type = type
-              self.image = pygame.image.load("Assets\Images\shard.png").convert_alpha()
-
-       def cols(self, rects):
-              # c = False
-              # for rect in rects:
-              #        if rect.colliderect(self.hitbox.move(2 * self.v.x, 0)):
-              #               if self.v.x > 0:
-              #                      self.p = pygame.Vector2(rect.left - (.5 * self.hitbox.width), self.p.y)
-              #               elif self.v.x < 0:
-              #                      self.p = pygame.Vector2(rect.right + (.5 * self.hitbox.width), self.p.y)    
-              #               self.v = pygame.Vector2(-self.v.x, self.v.y)
-              #               c = True
-              #        if rect.colliderect(self.hitbox.move( 2 * self.v.xy)):   
-              #               if self.v.y < 0:
-              #                      self.p = pygame.Vector2(self.p.x, rect.bottom + (.5 * self.hitbox.height))
-              #               elif self.v.y > 0:
-              #                      self.p = pygame.Vector2(self.p.x, rect.top - (.5 * self.hitbox.height))    
-              #               self.v = pygame.Vector2(self.v.x, -self.v.y)
-              #               c = True
-                     
-              # if c:
-              #        self.curbounces += 1
-              pass
+              self.image = pygame.image.load("Assets/Images/shard.png").convert_alpha()
 
        def move(self, rects):
 

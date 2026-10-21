@@ -39,10 +39,10 @@ class Slingshot:
         
         if self.flip:    
             self.current_sprite = pygame.transform.flip(self.graphic, True, False)
-            self.player.current_sprite = pygame.transform.flip(self.player.graphic, True, False)
+            #self.player.current_sprite = pygame.transform.flip(self.player.graphic, True, False)
         else:
             self.current_sprite = self.graphic
-            self.player.current_sprite = self.player.graphic
+            #self.player.current_sprite = self.player.graphic
 
         self.current_sprite = pygame.transform.rotate(self.current_sprite, self.rotation)
     def draw(self):
