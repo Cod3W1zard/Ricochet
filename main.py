@@ -112,10 +112,7 @@ async def main():
                      screen.blit(background, (0,0))
        
                      for rect in walls:
-                            if rect.tag == "shed":
-                                   pygame.draw.rect(screen, (150, 75, 0), rect)
-                            else:
-                                   if rect.sprite != None:
+                            if rect.sprite != None:
                                           screen.blit(rect.sprite, rect)
                      plr.draw() 
                      for e in enms:
