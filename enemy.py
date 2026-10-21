@@ -82,9 +82,10 @@ class Enemy:
         self.dir = disp.normalize()    
         if self.curpathfinding:
             wdisp = (self.pathfindP - self.p)
-            if wdisp.dot(self.dir) < 0:
+            if wdisp.dot(self.dir) < 0 or wdisp.magnitude() < 1:
                self.curpathfinding = False
-            self.dir = wdisp.normalize()
+            else:
+                self.dir = wdisp.normalize()
             self.v = self.v.move_towards(self.dir * self.spd, self.accel)
         else:
             self.clearshot = True
@@ -99,32 +100,32 @@ class Enemy:
                     if disp.x <= 0: 
                         if self.p.x > w.right:
                             px = w.right + self.colbox.width * 2
-                            if self.p.x < w.top or self.p.x > w.bottom:
+                            if self.p.y < w.top or self.p.y > w.bottom:
                                 px = w.left - self.colbox.width * 2
                         else:
                             px = w.left - self.colbox.width * 2
-                            if self.p.x < w.top or self.p.x > w.bottom:
+                            if self.p.y < w.top or self.p.y > w.bottom:
                                 px = w.right + self.colbox.width * 2
                     else:
                         if self.p.x < w.left:
                             px = w.left - self.colbox.width * 2
-                            if self.p.x < w.top or self.p.x > w.bottom:
+                            if self.p.y < w.top or self.p.y > w.bottom:
                                 px = w.right + self.colbox.width * 2
                         else:
                             px = w.right + self.colbox.width * 2
-                            if self.p.x < w.top or self.p.x > w.bottom:
+                            if self.p.y < w.top or self.p.y > w.bottom:
                                 px = w.left - self.colbox.width * 2
 
                     if disp.y <= 0: 
                         if self.p.y > w.bottom:
-                            py = w.bottom + self.colbox.height * 4
+                            py = w.bottom + self.colbox.height * 2
                         else:
-                            py = w.top - self.colbox.height * 4
+                            py = w.top - self.colbox.height * 2
                     else:
-                        if self.p.x < w.top:
-                            py = w.top - self.colbox.height * 4
+                        if self.p.y < w.top:
+                            py = w.top - self.colbox.height * 2
                         else:
-                            py = w.bottom + self.colbox.height * 4
+                            py = w.bottom + self.colbox.height * 2
                        
                     temp = pygame.Vector2(px, py)
                     tdisp = temp - self.p
@@ -153,9 +154,13 @@ class Enemy:
         
     def takeDamage(self, bullet, elist):
         self.elist = elist
-        self.h -= bullet.hit()
-        self.v += bullet.v * .5
         self.state = "hitstun"
+        d = bullet.hit()
+        self.v += bullet.v * .5
+        
+        if d > 0:
+            self.h -= d
+    
         if not self.state == "dead":
             self.flash = 60
             if(self.h <= 0):
@@ -176,13 +181,20 @@ class Enemy:
             if self.curAnim != "run":
                 if self.v.magnitude() > .1:
                     self.changeAnim("run")
-        if self.curAnim != "hurt":
-            if self.state == "hitstun":
-                self.changeAnim("hurt")
         if self.dir.x > 0:
             self.fl = False
         else:
             self.fl = True
+            
+        if self.state == "hitstun" or self.state == "dead":
+            if self.curAnim != "hurt":
+                self.changeAnim("hurt")
+
+            if abs(self.v.x) > 1:
+                if self.v.x > 0:
+                    self.fl = True
+                else:
+                    self.fl = False
             
         self.playAnimation()
 
