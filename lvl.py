@@ -26,22 +26,22 @@ def Generate(screen):
         enemy.Enemy(screen, (450,200), PLAYER_WIDTH, PLAYER_HEIGHT, plr)
         ]
     walls = [
-        TaggedRect(50, 50, 50, 50, sprite = "plant_c", flip_y = True),
-        TaggedRect(50, 100, 50, 50, sprite = "plant_t", flip_y = True),
-        TaggedRect(100, 50, 50, 50, sprite = "plant_b", flip_y = True),
-        TaggedRect(50, 250, 50, 50, sprite = "plant_t"),
-        TaggedRect(50, 300, 50, 50, sprite = "plant_c"),
-        TaggedRect(100, 300, 50, 50, sprite = "plant_b"),
-        TaggedRect(450, 50, 50, 50, sprite = "plant_b", flip_x = True, flip_y = True),
-        TaggedRect(500, 100, 50, 50, sprite = "plant_t", flip_x = True, flip_y = True),
-        TaggedRect(500, 50, 50, 50, sprite = "plant_c", flip_x = True, flip_y = True),
-        TaggedRect(500, 250, 50, 50, sprite = "plant_t", flip_x = True),
-        TaggedRect(500, 300, 50, 50, sprite = "plant_c", flip_x = True),
-        TaggedRect(450, 300, 50, 50, sprite = "plant_b", flip_x = True),
-        TaggedRect(250, 150, 50, 50, sprite = "plant_c", flip_y = True),
-        TaggedRect(300, 150, 50, 50, sprite = "plant_c", flip_x = True, flip_y = True),
-        TaggedRect(250, 200, 50, 50, sprite = "plant_c"),
-        TaggedRect(300, 200, 50, 50, sprite = "plant_c", flip_x = True),
-        TaggedRect(275, 0, 50, 50, sprite = "shed", tag = "shed")
+        TaggedRect(50, 50, 50, 50, sprite = "Scenery/plantpot_crnr_upsidedown", flip_x = True),
+        TaggedRect(50, 100, 50, 50, sprite = "Scenery/plantpot_top_upsidedown", flip_x = True),
+        TaggedRect(100, 50, 50, 50, sprite = "Scenery/plantpot_side_upsidedown", flip_x = True),
+        TaggedRect(50, 250, 50, 50, sprite = "Scenery/plantpot_top"),
+        TaggedRect(50, 300, 50, 50, sprite = "Scenery/plantpot_crnr"),
+        TaggedRect(100, 300, 50, 50, sprite = "Scenery/plantpot_side"),
+        TaggedRect(450, 50, 50, 50, sprite = "Scenery/plantpot_side_upsidedown"),
+        TaggedRect(500, 100, 50, 50, sprite = "Scenery/plantpot_top_upsidedown"),
+        TaggedRect(500, 50, 50, 50, sprite = "Scenery/plantpot_crnr_upsidedown"),
+        TaggedRect(500, 250, 50, 50, sprite = "Scenery/plantpot_top", flip_x = True),
+        TaggedRect(500, 300, 50, 50, sprite = "Scenery/plantpot_crnr", flip_x = True),
+        TaggedRect(450, 300, 50, 50, sprite = "Scenery/plantpot_side", flip_x = True),
+        TaggedRect(250, 150, 50, 50, sprite = "Scenery/plantpot_crnr_upsidedown", flip_x = True),
+        TaggedRect(300, 150, 50, 50, sprite = "Scenery/plantpot_crnr_upsidedown"),
+        TaggedRect(250, 200, 50, 50, sprite = "Scenery/plantpot_crnr"),
+        TaggedRect(300, 200, 50, 50, sprite = "Scenery/plantpot_crnr", flip_x = True),
+        TaggedRect(275, 0, 50, 50, sprite = "Scenery/shed", tag = "shed")
         ]
     return (plr, enemies, walls)

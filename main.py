@@ -121,7 +121,7 @@ async def main():
        
                      for rect in walls:
                             if rect.sprite != None:
-                                   screen.blit(rect.sprite, rect)
+                                          screen.blit(rect.sprite, rect)
                      plr.draw() 
                      for e in enms:
                             if e.state == "pursue":
