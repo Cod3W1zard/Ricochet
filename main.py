@@ -85,12 +85,12 @@ async def main():
                      for event in pygame.event.get():
                             if event.type == pygame.QUIT:
                                    running = False
-                            if event.type == pygame.MOUSEBUTTONDOWN:
+                            if event.type == pygame.MOUSEBUTTONDOWN and plr.state == "run":
                                    s.shoot()
                             if event.type == pygame.KEYDOWN:
                                    if event.key == pygame.K_F1:
                                           debug = not debug
-                                   if event.key == pygame.K_SPACE:
+                                   if event.key == pygame.K_k and debug:
                                           plr.keys += 1
                                    if event.key == pygame.K_LCTRL:
                                           enms.append(enemy.Enemy(screen, (random.uniform(0, 600), random.uniform(0, 400)), lvl.PLAYER_WIDTH, lvl.PLAYER_HEIGHT, plr))
@@ -105,7 +105,14 @@ async def main():
                             i += (0, -1)
                      if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                             i += (0, 1)
-                     plr.movement(i)                                                                                                                                           
+                    
+
+                     if plr.state == "run":
+                            plr.movement(i)      
+                            if keys[pygame.K_SPACE]: 
+                                   plr.dash(i)
+                     if plr.state == "hitstun" or plr.state == "dead" or plr.state == "dash":
+                            plr.drag()                                                                                                                              
                      plr.cols(walls)
                      plr.update()
                      for x in range(0, WIDTH, tile_width):
@@ -138,7 +145,7 @@ async def main():
                             eb.move(walls)
                             if eb.curbounces >= eb.maxbounces:
                                    bullet.ebullets.remove(eb)
-                            if eb.hitbox.colliderect(plr.hitbox):
+                            if eb.hitbox.colliderect(plr.hitbox) and plr.state != "dash":
                                    plr.takeDamage(eb)
                                    bullet.ebullets.remove(eb)
                             eb.draw() 

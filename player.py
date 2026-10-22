@@ -8,10 +8,16 @@ class Player:
     hitbox = pygame.Rect(0, 0, 0, 0)
     colbox = pygame.Rect(0, 0, 0, 0)
     coloffset = pygame.Vector2(0,12)
+
+    dashcd = 1
+    curdashcd = 0
+    dashspd = 6
     spd = 3
-    decel = .825
+    decel = .25
     accel = .75
+    
     h = 16
+    state = "run"
 
     fl = False
     spritesheet = None
@@ -81,9 +87,29 @@ class Player:
 
     def takeDamage(self, bullet):
         self.h -= bullet.hit()
-        if self.h <= 0:
-            pygame.quit()
-            sys.exit()
+        self.state = "hitstun"
+        d = bullet.hit()
+        self.v += bullet.v * .5
+        
+        if d > 0:
+            self.h -= d
+    
+        if not self.state == "dead":
+            #self.flash = 60
+            if(self.h <= 0):
+                self.state = "dead"
+    
+    def dash(self, dir):
+        self.state = "dash"
+        if dir.xy != (0, 0):
+            self.v = dir.normalize() * self.dashspd
+    
+
+
+    def drag(self):
+        self.v = self.v.move_towards(pygame.Vector2(0 ,0), self.decel)
+        if self.v.magnitude() < 1 and self.state != "dead":
+            self.state = "run"
 
     animTick = 0
     currentframe = 0
@@ -94,11 +120,26 @@ class Player:
         if self.curAnim != "run":
             if self.v.magnitude() > .1:
                 self.changeAnim("run")
-        else:
+        elif abs(self.v.x) > .1:
             if self.v.x > 0:
                 self.fl = False
             else:
                 self.fl = True
+
+        if self.state == "hitstun" or self.state == "dead":
+            if self.curAnim != "hurt":
+                self.changeAnim("hurt")
+
+            if abs(self.v.x) > 1:
+                if self.v.x > 0:
+                    self.fl = True
+                else:
+                    self.fl = False
+        
+        if self.state == "dash":
+            if self.curAnim != "dash":
+                self.changeAnim("dash")
+
         self.playAnimation()
 
     def changeAnim(self, anim):
