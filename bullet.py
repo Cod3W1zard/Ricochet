@@ -10,7 +10,7 @@ class Bullet:
        maxbounces = 5
        curbounces = 0
        daM = 4       
-       baseDamage = 0
+       baseDamage = 4
        speed = 5
 
        def __init__(self, surface, center, radius, speed, direction, type = "player"):
@@ -54,7 +54,10 @@ class Bullet:
                      self.curbounces += 1
        
        def hit(self):
-              return self.baseDamage + self.daM * self.curbounces
+              if self.type == "player":
+                     return self.baseDamage + self.daM * (self.curbounces - 1)
+              else:
+                     return self.baseDamage
        
        def draw(self):
               if self.type == "player":

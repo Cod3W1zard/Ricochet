@@ -1,5 +1,6 @@
 from inspect import currentframe
 import pygame
+import sys
 
 class Player:
     p = pygame.Vector2(0, 0)
@@ -10,7 +11,7 @@ class Player:
     spd = 3
     decel = .825
     accel = .75
-    h = 15
+    h = 16
 
     fl = False
     spritesheet = None
@@ -74,9 +75,15 @@ class Player:
     
     def takeDamage(self, damage):
         self.h -= damage
+        if self.h <= 0:
+            pygame.quit()
+            sys.exit()
 
     def takeDamage(self, bullet):
         self.h -= bullet.hit()
+        if self.h <= 0:
+            pygame.quit()
+            sys.exit()
 
     animTick = 0
     currentframe = 0
