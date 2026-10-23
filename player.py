@@ -10,7 +10,7 @@ class Player:
 
     dashcd = 1
     curdashcd = 0
-    dashspd = 6
+    dashspd = 7
     spd = 3
     decel = .25
     accel = .75

@@ -156,6 +156,7 @@ class Enemy:
         self.elist = elist
         self.state = "hitstun"
         d = bullet.hit()
+        curpathfinding = False
         self.v += bullet.v * .5
         
         if d > 0:
