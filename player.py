@@ -1,5 +1,6 @@
 from inspect import currentframe
 import pygame
+import sys
 
 class Player:
     p = pygame.Vector2(0, 0)
@@ -15,7 +16,7 @@ class Player:
     decel = .25
     accel = .75
     
-    h = 15
+    h = 16
     state = "run"
 
     fl = False
@@ -80,6 +81,9 @@ class Player:
     
     def takeDamage(self, damage):
         self.h -= damage
+        if self.h <= 0:
+            pygame.quit()
+            sys.exit()
 
     def takeDamage(self, bullet):
         self.h -= bullet.hit()
