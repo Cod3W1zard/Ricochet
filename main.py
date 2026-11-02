@@ -165,6 +165,8 @@ async def main():
 
                      text = font_top.render(f"Keys: {plr.keys}", True, (255, 255, 255))
                      screen.blit(text, (20, 20))
+                     text = font_top.render(f"Health: {plr.h}", True, (255, 255, 255))
+                     screen.blit(text, (480, 20))
                      text = font_bottom.render(f"Debug: F1", True, (255, 255, 255))
                      screen.blit(text, (12, 388))
               
@@ -183,7 +185,21 @@ async def main():
                      screen.fill((0,0,0))
                      text = font_top.render(f"You Win!", True, (255, 255, 255))
                      screen.blit(text, (300-text.get_width()/2, 200))
-              
+              if plr.game_state == "die":
+                     for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                   running = False
+                            if event.type == pygame.KEYDOWN:
+                                   if event.key == pygame.K_SPACE:
+                                          l = lvl.Generate(screen)
+                                          plr = l[0]
+                                          enms = l[1]
+                                          plr.keylist = []
+                                          walls = l[2]
+                                          plr.game_state = "play"
+                     screen.fill((0,0,0))
+                     text = font_top.render(f"You Died...", True, (255, 255, 255))
+                     screen.blit(text, (300-text.get_width()/2, 200))
               pygame.display.flip()
               clock.tick(60)
               await asyncio.sleep(0)

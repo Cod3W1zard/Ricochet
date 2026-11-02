@@ -16,7 +16,7 @@ class Player:
     decel = .25
     accel = .75
     
-    h = 16
+    h = 20
     state = "run"
 
     fl = False
@@ -45,6 +45,14 @@ class Player:
 
     def update(self):
         self.set(self.p + self.v)
+        if self.p.x < 0:
+            self.p.x = 600 + self.p.x
+        if self.p.x > 600:
+            self.p.x -= 600
+        if self.p.y < 0:
+            self.p.y = 400 + self.p.y
+        if self.p.y > 600:
+            self.p.y -= 600
         self.animationLogic()
 
     def cols(self, rects):
@@ -88,16 +96,13 @@ class Player:
     def takeDamage(self, bullet):
         self.h -= bullet.hit()
         self.state = "hitstun"
-        d = bullet.hit()
         self.v += bullet.v * .5
-        
-        if d > 0:
-            self.h -= d
     
         if not self.state == "dead":
             #self.flash = 60
             if(self.h <= 0):
                 self.state = "dead"
+                self.game_state = "die"
     
     def dash(self, dir):
         self.state = "dash"
