@@ -19,14 +19,13 @@ class TaggedRect(pygame.Rect):
             self.sprite = pygame.transform.flip(self.sprite, flip_x, flip_y)
             self.sprite = pygame.transform.scale(self.sprite, (50, 50))
 
-
 def Generate(screen):
     plr = player.Player(screen, (150,200), PLAYER_WIDTH, PLAYER_HEIGHT, "play")
     enemies = [
         enemy.Enemy(screen, (450,200), PLAYER_WIDTH, PLAYER_HEIGHT, plr),
-        enemy.Enemy(screen, (450,400), PLAYER_WIDTH, PLAYER_HEIGHT, plr),
+        enemy.Enemy(screen, (350,350), PLAYER_WIDTH, PLAYER_HEIGHT, plr),
         enemy.Enemy(screen, (450,100), PLAYER_WIDTH, PLAYER_HEIGHT, plr),
-        enemy.Enemy(screen, (450,300), PLAYER_WIDTH, PLAYER_HEIGHT, plr)
+        enemy.Enemy(screen, (350,150), PLAYER_WIDTH, PLAYER_HEIGHT, plr)
         ]
     walls = [
         TaggedRect(50, 50, 50, 50, sprite = "Scenery/plantpot_crnr_upsidedown", flip_x = True),
@@ -45,6 +44,10 @@ def Generate(screen):
         TaggedRect(300, 150, 50, 50, sprite = "Scenery/plantpot_crnr_upsidedown"),
         TaggedRect(250, 200, 50, 50, sprite = "Scenery/plantpot_crnr"),
         TaggedRect(300, 200, 50, 50, sprite = "Scenery/plantpot_crnr", flip_x = True),
-        TaggedRect(275, 0, 50, 50, sprite = "Scenery/shed", tag = "shed")
+        TaggedRect(275, 0, 50, 50, sprite = "Scenery/shed", tag = "shed"),
+        TaggedRect(0, 0, 1, 400, tag = "wall"),
+        TaggedRect(0, 0, 600, 1, tag = "wall"),
+        TaggedRect(599, 0, 1, 400, tag = "wall"),
+        TaggedRect(0, 399, 600, 1, tag = "wall")
         ]
     return (plr, enemies, walls)

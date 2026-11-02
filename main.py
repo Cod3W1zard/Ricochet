@@ -179,7 +179,7 @@ async def main():
                                           l = lvl.Generate(screen)
                                           plr = l[0]
                                           enms = l[1]
-                                          plr.keylist = []
+                                          enemy.Enemy.keylist = []
                                           walls = l[2]
                                           plr.game_state = "play"
                      screen.fill((0,0,0))
@@ -194,7 +194,7 @@ async def main():
                                           l = lvl.Generate(screen)
                                           plr = l[0]
                                           enms = l[1]
-                                          plr.keylist = []
+                                          enemy.Enemy.keylist = []
                                           walls = l[2]
                                           plr.game_state = "play"
                      screen.fill((0,0,0))
